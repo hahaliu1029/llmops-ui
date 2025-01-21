@@ -1,23 +1,47 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { isLogin } from '@/utils/auth'
+import DefaultLayout from '@/views/layouts/DefaultLayout.vue'
+import BlankLayout from '@/views/layouts/BlankLayout.vue'
+// import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      component: DefaultLayout,
+      children: [
+        {
+          path: 'space/apps',
+          name: 'SpaceAppsList',
+          component: () => import('@/views/space/apps/ListView.vue'),
+        },
+      ],
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
+      path: '/',
+      component: BlankLayout,
+      children: [
+        {
+          path: 'auth/login',
+          name: 'Login',
+          component: () => import('@/views/auth/LoginView.vue'),
+        },
+      ],
     },
   ],
+})
+
+router.beforeEach(async (to, from, next) => {
+  if (to.name !== 'Login' && !isLogin()) {
+    next({ name: 'Login' })
+    return
+  }
+
+  console.log('to', to)
+  console.log('from', from)
+
+  next()
 })
 
 export default router

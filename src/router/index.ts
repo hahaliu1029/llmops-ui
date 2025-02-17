@@ -13,17 +13,37 @@ const router = createRouter({
       children: [
         {
           path: '',
-          redirect: { name: 'Home' },
+          redirect: { name: 'pages-home' },
         },
         {
           path: 'home',
-          name: 'Home',
+          name: 'pages-home',
           component: () => import('@/views/pages/HomeView.vue'),
         },
         {
           path: 'space/apps',
-          name: 'SpaceAppsList',
+          name: 'space-apps-list',
           component: () => import('@/views/space/apps/ListView.vue'),
+        },
+        {
+          path: 'space/tools',
+          name: 'space-tools-list',
+          component: () => import('@/views/space/tools/ListView.vue'),
+        },
+        {
+          path: 'store/apps',
+          name: 'store-apps-list',
+          component: () => import('@/views/store/apps/ListView.vue'),
+        },
+        {
+          path: 'store/tools',
+          name: 'store-tools-list',
+          component: () => import('@/views/store/tools/ListView.vue'),
+        },
+        {
+          path: 'open',
+          name: 'open-index',
+          component: () => import('@/views/open/IndexView.vue'),
         },
       ],
     },

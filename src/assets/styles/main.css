@@ -11,4 +11,9 @@
     width: 0;
     height: 0;
   }
+
+  html,
+  body {
+    @apply min-h-[600px] min-w-[1200px] h-full w-full;
+  }
 }

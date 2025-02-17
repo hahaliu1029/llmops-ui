@@ -16,10 +16,17 @@ export default [
 
   ...pluginVue.configs['flat/essential'],
   ...vueTsEslintConfig(),
-  
+
   {
     ...pluginVitest.configs.recommended,
     files: ['src/**/__tests__/*'],
   },
   skipFormatting,
+  {
+    name: 'disable-no-explicit-any',
+    files: ['**/*.{ts,tsx,vue}'], // 仅对 TypeScript 文件生效
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ]

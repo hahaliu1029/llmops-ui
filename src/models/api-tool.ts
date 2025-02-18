@@ -1,4 +1,4 @@
-import { type BasePaginatorResponse } from './base'
+import { type BasePaginatorResponse, type BaseResponse } from './base'
 
 // 获取自定义API插件响应接口
 export type GetApiToolProvidersWithPageResponse = BasePaginatorResponse<{
@@ -28,12 +28,11 @@ export type UpdateApiToolProviderRequest = {
 }
 
 // 获取自定义API工具提供者响应接口
-export type GetApiToolProviderResponse = {
-  data: any
+export type GetApiToolProviderResponse = BaseResponse<{
   id: string
   name: string
   // icon: string
   headers: Array<any>
   openapi_schema: string
   created_at: number
-}
+}>

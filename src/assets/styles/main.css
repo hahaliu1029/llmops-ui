@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 @layer base {
-  .scrollbar {
-    scrollbar-width: thin; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
+  .scrollbar-w-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
-  .scrollbar::-webkit-scrollbar {
-    width: 0;
-    height: 0;
+
+  .scrollbar-w-none::-webkit-scrollbar {
+    display: none;
   }
 
   html,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, computed } from 'vue'
 import { getCategories, getBuiltinTools } from '@/services/builtin-tool'
-import { API_PREFIX } from '@/config'
+import { API_PREFIX, TYPE_MAP } from '@/config'
 import moment from 'moment'
 
 const categories = reactive<Array<any>>([])
@@ -9,6 +9,7 @@ const providers = reactive<Array<any>>([])
 const loading = ref(false)
 const category = ref<string>('all')
 const search_word = ref<string>('')
+const showIndex = ref<number>(-1)
 
 const filteredProviders = computed(() => {
   return providers.filter((item) => {
@@ -22,14 +23,14 @@ const filteredProviders = computed(() => {
 
 onMounted(async () => {
   const resp = await getCategories()
-  Object.assign(categories, resp.data)
+  categories.push(...resp.data)
 })
 
 onMounted(async () => {
   try {
     loading.value = true
     const resp = await getBuiltinTools()
-    Object.assign(providers, resp.data)
+    providers.push(...resp.data)
   } finally {
     loading.value = false
   }
@@ -80,8 +81,8 @@ onMounted(async () => {
       <!--插件列表-->
       <a-row :gutter="[20, 20]" class="flex-1">
         <!--有数据-->
-        <a-col v-for="provider in filteredProviders" :key="provider.name" :span="6">
-          <a-card hoverable class="rounded-lg cursor-pointer">
+        <a-col v-for="(provider, index) in filteredProviders" :key="provider.name" :span="6">
+          <a-card hoverable class="rounded-lg cursor-pointer" @click="showIndex = index">
             <!--顶部提供商名称-->
             <div class="flex items-center gap-3 mb-3">
               <!--左侧图标-->
@@ -121,6 +122,93 @@ onMounted(async () => {
           ></a-empty>
         </a-col>
       </a-row>
+      <!--卡片抽屉-->
+      <a-drawer
+        :visible="showIndex !== -1"
+        title="工具详情"
+        :width="350"
+        :footer="false"
+        :drawer-style="{ background: '#f9fafb' }"
+        @cancel="showIndex = -1"
+      >
+        <div v-if="showIndex !== -1">
+          <!--顶部提供商名称-->
+          <div class="flex items-center gap-3 mb-3">
+            <!--左侧图标-->
+            <a-avatar
+              :size="40"
+              shape="square"
+              :style="{ backgroundColor: filteredProviders[showIndex].background }"
+            >
+              <img
+                :src="`${API_PREFIX}/builtin-tools/${filteredProviders[showIndex].name}/icon`"
+                :alt="filteredProviders[showIndex].name"
+              />
+            </a-avatar>
+            <!--右侧-->
+            <div class="flex flex-col">
+              <div class="text-base text-gray-900 font-bold">
+                {{ filteredProviders[showIndex].label }}
+              </div>
+              <div class="text-xs text-gray-500 line-clamp-1">
+                提供商 {{ filteredProviders[showIndex].name }} ·
+                {{ filteredProviders[showIndex].tools.length }} 个插件
+              </div>
+            </div>
+          </div>
+          <div class="leading-[18px] text-gray-500 mb-2">
+            {{ filteredProviders[showIndex].description }}
+          </div>
+          <!--分隔符-->
+          <hr class="my-4" />
+          <!--提供者工具-->
+          <div class="flex flex-col gap-2">
+            <div class="text-xs text-gray-500">
+              包含{{ filteredProviders[showIndex].tools.length }}个工具
+            </div>
+            <!--工具列表-->
+            <a-card
+              v-for="tool in filteredProviders[showIndex].tools"
+              :key="tool.name"
+              class="coursor-pointer flex flex-col rounded-xl"
+            >
+              <!--工具名称-->
+              <div class="font-bold text-gray-900 mb-2">{{ tool.label }}</div>
+              <!--工具描述-->
+              <div class="text-gray-500 text-xs">
+                {{ tool.description }}
+              </div>
+              <!--工具参数-->
+              <div v-if="tool.inputs.length > 0" class="">
+                <!--分隔符-->
+                <div class="flex items-center gap-2 my-4">
+                  <div class="text-xs font-bold text-gray-500">参数</div>
+                  <hr class="flex-1" />
+                </div>
+                <!--参数列表-->
+                <div class="flex flex-col gap-4">
+                  <div v-for="input in tool.inputs" :key="input.name" class="flex flex-col gap-2">
+                    <!--上半部分---->
+                    <div class="flex items-center gap-2 text-xs">
+                      <div class="text-gray-900 font-bold">
+                        {{ input.name }}
+                      </div>
+                      <div class="text-gray-500">
+                        {{ TYPE_MAP[input.type as keyof typeof TYPE_MAP] }}
+                      </div>
+                      <div v-if="input.required" class="text-red-700">必填</div>
+                    </div>
+                    <!--参数描述信息-->
+                    <div class="text-xs text-gray-500">
+                      {{ input.description }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a-card>
+          </div>
+        </div>
+      </a-drawer>
     </div>
   </a-spin>
 </template>

@@ -10,3 +10,11 @@ export const HTTP_CODE = {
   FORBIDDEN: 'forbidden',
   VALIDATEERROR: 'validate_error',
 }
+
+// 类型字符串与中文映射
+export const TYPE_MAP = {
+  str: '字符串',
+  int: '整数',
+  float: '浮点数',
+  bool: '布尔值',
+}

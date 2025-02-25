@@ -55,14 +55,27 @@ const sendMessage = async () => {
 
     // const content = response.data.content
 
-    const app_id = route.params.app_id
-    const response = await debugApp(app_id as string, humanQuery)
-    console.log(response)
-    const content = response.data.content
-
     messages.value.push({
       role: 'ai',
-      content,
+      content: '',
+    })
+
+    const app_id = route.params.app_id
+
+    await debugApp(app_id as string, humanQuery, (event_response) => {
+      // 提取流式事件响应数据以及事件响应名称
+      const event = event_response?.event
+      const data = event_response?.data
+
+      // 获取最后一条消息
+      const lastIndex = messages.value.length - 1
+      const message = messages.value[lastIndex]
+
+      // TODO: 暂时只处理agent_message事件，其他事件类型等接口开发完毕后再处理
+      if (event === 'agent_message') {
+        const chunk_content = data?.data
+        messages.value[lastIndex].content = message.content + chunk_content
+      }
     })
   } finally {
     isLoading.value = false
@@ -163,6 +176,7 @@ const sendMessage = async () => {
                 class="bg-gray-100 text-gray-900 border boder-gray-200 px-4 py-3 rounded-2xl leading-5 max-w-max"
               >
                 {{ message.content }}
+                <div v-if="isLoading" class="cursor"></div>
               </div>
             </div>
           </div>
@@ -175,22 +189,6 @@ const sendMessage = async () => {
               <icon-apps></icon-apps>
             </a-avatar>
             <div class="text-2xl font-semibold text-gray-900">欢迎使用GPT聊天机器人</div>
-          </div>
-          <!--加载状态-->
-          <div v-if="isLoading" class="flex flex-row gap-2 mb-6">
-            <!--头像-->
-            <a-avatar class="flex-shrink-0" :size="30" :style="{ backgroundColor: '#00d0b6' }"
-              ><icon-apps></icon-apps
-            ></a-avatar>
-            <!--消息内容-->
-            <div class="flex flex-col gap-2">
-              <div class="font-semibold text-gray-700">GPT聊天机器人</div>
-              <div
-                class="bg-gray-100 text-gray-900 border boder-gray-200 px-4 py-3 rounded-2xl leading-5 max-w-max"
-              >
-                <icon-loading></icon-loading>
-              </div>
-            </div>
           </div>
         </div>
         <!--输入框-->
@@ -230,3 +228,26 @@ const sendMessage = async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.cursor {
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background-color: #444444;
+  animation: blink 1s step-end infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+</style>

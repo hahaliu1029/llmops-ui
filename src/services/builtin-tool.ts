@@ -1,5 +1,5 @@
 import { get } from '@/utils/request'
-import { type GetCategoriesResponse, type GetBuiltinToolsResponse } from '@/models/builtin-tool'
+import { type GetBuiltinToolsResponse, type GetCategoriesResponse } from '@/models/builtin-tool'
 
 // 获取内置分类列表信息
 export const getCategories = () => {

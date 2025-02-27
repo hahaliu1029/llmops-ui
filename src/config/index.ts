@@ -1,20 +1,20 @@
-// api prefix
-export const API_PREFIX = 'http://127.0.0.1:5000'
+// api请求接口前缀
+export const apiPrefix: string = 'http://127.0.0.1:5000'
 
 // 业务状态码
-export const HTTP_CODE = {
-  SUCCESS: 'success',
-  FAIL: 'fail',
-  NOTFOUND: 'not_found',
-  UNAUTHORIZED: 'unauthorized',
-  FORBIDDEN: 'forbidden',
-  VALIDATEERROR: 'validate_error',
+export const httpCode = {
+  success: 'success',
+  fail: 'fail',
+  notFound: 'not_found',
+  unauthorized: 'unauthorized',
+  forbidden: 'forbidden',
+  validateError: 'validate_error',
 }
 
 // 类型字符串与中文映射
-export const TYPE_MAP = {
+export const typeMap: { [key: string]: string } = {
   str: '字符串',
-  int: '整数',
-  float: '浮点数',
+  int: '整型',
+  float: '浮点型',
   bool: '布尔值',
 }

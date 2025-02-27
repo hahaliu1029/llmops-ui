@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { isLogin } from '@/utils/auth'
 import DefaultLayout from '@/views/layouts/DefaultLayout.vue'
 import BlankLayout from '@/views/layouts/BlankLayout.vue'
-// import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,7 +12,7 @@ const router = createRouter({
       children: [
         {
           path: '',
-          redirect: { name: 'pages-home' },
+          redirect: 'home',
         },
         {
           path: 'home',
@@ -47,6 +46,16 @@ const router = createRouter({
           ],
         },
         {
+          path: 'space/datasets/:dataset_id/documents',
+          name: 'space-datasets-documents-list',
+          component: () => import('@/views/space/datasets/documents/ListView.vue'),
+        },
+        {
+          path: 'space/datasets/:dataset_id/documents/create',
+          name: 'space-datasets-documents-create',
+          component: () => import('@/views/space/datasets/documents/CreateView.vue'),
+        },
+        {
           path: 'store/apps',
           name: 'store-apps-list',
           component: () => import('@/views/store/apps/ListView.vue'),
@@ -69,12 +78,12 @@ const router = createRouter({
       children: [
         {
           path: 'auth/login',
-          name: 'Login',
+          name: 'auth-login',
           component: () => import('@/views/auth/LoginView.vue'),
         },
         {
           path: 'space/apps/:app_id',
-          name: 'SpaceAppsDetail',
+          name: 'space-apps-detail',
           component: () => import('@/views/space/apps/DetailView.vue'),
         },
       ],
@@ -82,16 +91,10 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach(async (to, from, next) => {
-  if (to.name !== 'Login' && !isLogin()) {
-    next({ name: 'Login' })
-    return
+// todo:路由守卫逻辑还未实现
+router.beforeEach(async (to, from) => {
+  if (!isLogin() && to.name != 'auth-login') {
+    return { path: '/auth/login' }
   }
-
-  console.log('to', to)
-  console.log('from', from)
-
-  next()
 })
-
 export default router

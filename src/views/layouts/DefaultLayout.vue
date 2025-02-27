@@ -19,40 +19,37 @@ const route = useRoute()
     <!-- 侧边栏 -->
     <a-layout-sider :width="240" class="min-h-screen bg-gray-50 p-2 shadow-none">
       <div class="bg-white h-full rounded-lg px-2 py-4 flex flex-col justify-between">
-        <!--上半部分-->
+        <!-- 上半部分 -->
         <div class="">
-          <!--顶部logo-->
+          <!-- 顶部Logo -->
           <router-link
-            to="home"
+            to="/home"
             class="block h-9 w-[110px] mb-5 bg-gray-200 hover:bg-gray-300 transition-all rounded-lg"
-          >
-          </router-link>
-          <!--创建AI应用按钮-->
+          />
+          <!-- 创建AI应用按钮 -->
           <a-button type="primary" long class="rounded-lg mb-4">
             <template #icon>
-              <icon-plus></icon-plus>
+              <icon-plus />
             </template>
             创建 AI 应用
           </a-button>
-          <!--侧边栏导航-->
+          <!-- 侧边栏导航 -->
           <div class="flex flex-col gap-2">
             <router-link
               to="/home"
               class="flex items-center gap-2 h-8 leading-8 rounded-lg transition-all px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-200"
               active-class="bg-gray-100"
             >
-              <icon-home-full v-if="route.path.startsWith('/home')"> </icon-home-full>
-              <icon-home v-else></icon-home>
+              <icon-home-full v-if="route.path.startsWith('/home')" />
+              <icon-home v-else />
               主页
             </router-link>
             <router-link
               to="/space/apps"
-              :class="`flex items-center gap-2 h-8 leading-8 rounded-lg transition-all px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-200 ${
-                route.path.startsWith('/space') ? 'bg-gray-100' : ''
-              }`"
+              :class="`flex items-center gap-2 h-8 leading-8 rounded-lg transition-all px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-200 ${route.path.startsWith('/space') ? 'bg-gray-100' : ''}`"
             >
-              <icon-space-full v-if="route.path.startsWith('/space')"> </icon-space-full>
-              <icon-space v-else></icon-space>
+              <icon-space-full v-if="route.path.startsWith('/space')" />
+              <icon-space v-else />
               个人空间
             </router-link>
             <div class="text-gray-500 text-sm px-2">探索</div>
@@ -61,8 +58,8 @@ const route = useRoute()
               class="flex items-center gap-2 h-8 leading-8 rounded-lg transition-all px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-200"
               active-class="bg-gray-100"
             >
-              <icon-app-full v-if="route.path.startsWith('/store/apps')"> </icon-app-full>
-              <icon-app v-else></icon-app>
+              <icon-app-full v-if="route.path.startsWith('/store/apps')" />
+              <icon-app v-else />
               应用广场
             </router-link>
             <router-link
@@ -70,8 +67,8 @@ const route = useRoute()
               class="flex items-center gap-2 h-8 leading-8 rounded-lg transition-all px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-200"
               active-class="bg-gray-100"
             >
-              <icon-tool-full v-if="route.path.startsWith('/store/tools')"> </icon-tool-full>
-              <icon-tool v-else></icon-tool>
+              <icon-tool-full v-if="route.path.startsWith('/store/tools')" />
+              <icon-tool v-else />
               插件广场
             </router-link>
             <router-link
@@ -79,18 +76,20 @@ const route = useRoute()
               class="flex items-center gap-2 h-8 leading-8 rounded-lg transition-all px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-200"
               active-class="bg-gray-100"
             >
-              <icon-open-api-full v-if="route.path.startsWith('/open')"> </icon-open-api-full>
-              <icon-open-api v-else></icon-open-api>
+              <icon-open-api-full v-if="route.path.startsWith('/open')" />
+              <icon-open-api v-else />
               开放 API
             </router-link>
           </div>
         </div>
-        <!--账号设置-->
+        <!-- 账号设置 -->
         <a-dropdown position="tl">
           <div
             class="flex items-center p-2 gap-2 transition-all cursor-pointer rounded-lg hover:bg-gray-100"
           >
+            <!-- 头像 -->
             <a-avatar :size="32" class="text-sm bg-blue-700">刘</a-avatar>
+            <!-- 个人信息 -->
             <div class="flex flex-col">
               <div class="text-sm text-gray-900">刘哈哈</div>
               <div class="text-xs text-gray-500">liuhaha123666@gmail.com</div>
@@ -99,13 +98,13 @@ const route = useRoute()
           <template #content>
             <a-doption>
               <template #icon>
-                <icon-settings></icon-settings>
+                <icon-settings />
               </template>
               账号设置
             </a-doption>
             <a-doption>
               <template #icon>
-                <icon-poweroff></icon-poweroff>
+                <icon-poweroff />
               </template>
               退出登录
             </a-doption>
@@ -113,9 +112,11 @@ const route = useRoute()
         </a-dropdown>
       </div>
     </a-layout-sider>
-    <!--右侧内容-->
+    <!-- 右侧内容 -->
     <a-layout-content>
       <router-view />
     </a-layout-content>
   </a-layout>
 </template>
+
+<style scoped></style>

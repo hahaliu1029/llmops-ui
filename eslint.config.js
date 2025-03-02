@@ -27,6 +27,7 @@ export default [
     files: ['**/*.{ts,tsx,vue}'], // 仅对 TypeScript 文件生效
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+      'vue/multi-word-component-names': 'error',
     },
   },
 ]

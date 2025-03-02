@@ -44,12 +44,12 @@ const send = async () => {
 
       // 2.获取最后一条消息
       const lastIndex = messages.value.length - 1
-      const message = messages.value[lastIndex]
+      let message = messages.value[lastIndex]
 
       // todo: 3.暂时只处理agent_message事件，其他事件类型等接口开发完毕后添加
       if (event === 'agent_message') {
-        const chunk_content = data?.data
-        messages.value[lastIndex].content = message.content + chunk_content
+        // let chunk_content = data?.data
+        messages.value[lastIndex].content = message.content + data.answer
       }
     })
   } finally {
@@ -109,7 +109,7 @@ const send = async () => {
             <!-- 实际消息 -->
             <div class="flex flex-col gap-2">
               <div class="font-semibold text-gray-700">
-                {{ message.role === 'human' ? '刘哈哈' : 'ChatGPT聊天机器人' }}
+                {{ message.role === 'human' ? '慕小课' : 'ChatGPT聊天机器人' }}
               </div>
               <div
                 v-if="message.role === 'human'"

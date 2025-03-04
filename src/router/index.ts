@@ -92,16 +92,32 @@ const router = createRouter({
           component: () => import('@/views/auth/AuthorizeView.vue'),
         },
         {
-          path: 'space/apps/:app_id',
-          name: 'space-apps-detail',
-          component: () => import('@/views/space/apps/DetailView.vue'),
+          path: 'space/apps',
+          component: () => import('@/views/space/apps/AppLayoutView.vue'),
+          children: [
+            {
+              path: ':app_id',
+              name: 'space-apps-detail',
+              component: () => import('@/views/space/apps/DetailView.vue'),
+            },
+            {
+              path: ':app_id/published',
+              name: 'space-apps-published',
+              component: () => import('@/views/space/apps/PublishedView.vue'),
+            },
+            {
+              path: ':app_id/analysis',
+              name: 'space-apps-analysis',
+              component: () => import('@/views/space/apps/AnalysisView.vue'),
+            },
+          ],
         },
       ],
     },
   ],
 })
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from) => {
   if (!auth.isLogin() && !['auth-login', 'auth-authorize'].includes(to.name as string)) {
     return { path: '/auth/login' }
   }
